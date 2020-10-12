@@ -10,6 +10,7 @@ import { search } from "@/components/GitHubConnector/SearchUsers.vue";
 
 export default {
   name: "UserResults",
+  props: ["searchTerm"],
   data() {
     return {
       foo: "bar",

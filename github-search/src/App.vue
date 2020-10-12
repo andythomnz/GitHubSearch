@@ -1,50 +1,29 @@
 <template>
-  <div id="app">
-    <div id="header">
+  <v-app>
+    <v-main>
       <Header />
-    </div>
-    <div id="nav">
-      <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+      
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
-import Header from '@/components/Header.vue'
+import Header from "./components/Header";
 
 export default {
-  name: 'App',
-  created () {
+  name: "App",
+
+  created() {
     document.title = "GitHub Search";
   },
+
   components: {
-    Header
-  }
-}
+    Header,
+  },
+
+  data: () => ({
+    //
+  }),
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
