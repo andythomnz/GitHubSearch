@@ -36,7 +36,7 @@ export default {
   name: "SearchUsers",
   data() {
     return {
-      foo: "bar",
+      
     };
   },
 };

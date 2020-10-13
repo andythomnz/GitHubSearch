@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import UserResults from '../views/UserResults.vue'
+import TopicResults from '../views/TopicResults.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/user-results',
     name: 'User Results',
     component: UserResults
+  },
+  {
+    path: '/topic-results',
+    name: 'Topic Results',
+    component: TopicResults
   },
   {
     path: '/about',

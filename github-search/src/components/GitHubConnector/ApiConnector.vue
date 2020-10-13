@@ -4,7 +4,7 @@ import axios from "axios";
 const PROTOCOL = "https";
 const DOMAIN = "api.github.com";
 
-export async function getRequest(endpoint, params) {
+export async function getRequest(endpoint, params, headers) {
   if (!endpoint) {
     return {};
   }
@@ -18,8 +18,20 @@ export async function getRequest(endpoint, params) {
     });
     baseURL = baseURL.slice(0, -1); //remove trailing '&' character
   }
-  
-  return await axios.get(baseURL);
+
+  let requestContent = {
+    headers: {},
+  };
+
+  if (headers && headers.length > 0) {
+    headers.forEach((header) => {
+      if (header.key && header.value) {
+        requestContent.headers[header.key] = header.value;
+      }
+    });
+  }
+
+  return await axios.get(baseURL,requestContent);
 }
 
 export default {
