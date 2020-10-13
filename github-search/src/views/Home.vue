@@ -1,8 +1,14 @@
 <template>
-    <v-container>
-      <br><br><br><br><br>
-      <v-layout justify-center>
-        <v-flex>
+  <v-container>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <v-layout justify-center>
+      <v-flex>
+        <v-row>
+          <v-select v-model="selectedSearchType" :items="searchTypes" label="Search Type" outlined></v-select>
           <v-text-field
             outlined
             label="Search"
@@ -11,10 +17,10 @@
             append-icon="mdi-magnify"
             counter="100"
           ></v-text-field>
-        </v-flex>
-      </v-layout>
-    </v-container>
-    
+        </v-row>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -26,18 +32,46 @@ export default {
   data() {
     return {
       searchTerm: "",
+      searchTypes: ["Users", "Topics", "Featured Topics"],
+      selectedSearchType: "Users",
     };
   },
   methods: {
     onSearchBoxEnter() {
-      let encoded = encodeURIComponent(this.searchTerm).replaceAll("%20","+");
-      this.$router.push({
-        name: "User Results",
-        params: {
-          searchTerm: encoded
-        },
-      });
+      if (this.searchTerm.length > 100) {
+        return;
+      }
+      let encoded = encodeURIComponent(this.searchTerm).replaceAll("%20", "+");
+
+      switch (this.selectedSearchType) {
+        case "Users":
+          this.$router.push({
+            name: "User Results",
+            params: {
+              searchTerm: encoded,
+            },
+          });
+          break;
+        case "Topics":
+          this.$router.push({
+            name: "Topic Results",
+            params: {
+              searchTerm: encoded,
+              featuredOnly: false,
+            },
+          });
+          break;
+        case "Featured Topics":
+          this.$router.push({
+            name: "Topic Results",
+            params: {
+              searchTerm: encoded,
+              featuredOnly: true,
+            },
+          });
+          break;
+      }
     },
-  }
+  },
 };
 </script>

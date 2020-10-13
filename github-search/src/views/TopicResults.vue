@@ -5,7 +5,7 @@
       <v-container>
         <v-row>
           <v-col>
-            <h4>Showing {{(this.currentPage * this.resultsPerPage) - 9}} to {{this.currentPage * this.resultsPerPage}} of {{this.total_count}} results</h4>
+            <h4>Showing {{(this.currentPage * this.resultsPerPage) - 9}} to {{this.lastResultOfPage}} of {{this.total_count}} results</h4>
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
@@ -41,7 +41,7 @@ export default {
   props: [],
   data() {
     return {
-      searchTerm: "javascript",
+      searchTerm: "",
       featuredOnly: false,
       currentPage: 1,
       resultsPerPage: 10,
@@ -63,8 +63,8 @@ export default {
   },
   components: {},
   mounted() {
-    //this.searchTerm = this.$route.params.searchTerm;
-    //this.featuredOnly = this.$route.params.featuredOnly;
+    this.searchTerm = this.$route.params.searchTerm;
+    this.featuredOnly = this.$route.params.featuredOnly;
     this.refreshData();
   },
   methods: {
@@ -74,9 +74,14 @@ export default {
           this.results = res.topics;
           this.total_count = res.total_count;
 
+          //account for partially filled pages
           this.totalPages = parseInt(this.total_count / this.resultsPerPage);
           if (this.total_count % this.resultsPerPage !== 0) {
-            this.totalPages++; //account for partially filled pages
+            this.totalPages++; 
+          }
+          this.lastResultOfPage = this.currentPage * this.resultsPerPage
+          if (this.lastResultOfPage > this.total_count) {
+            this.lastResultOfPage = this.total_count;
           }
         }
       );

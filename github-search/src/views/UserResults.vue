@@ -5,7 +5,7 @@
       <v-container>
         <v-row>
           <v-col>
-            <h4>Showing {{(this.currentPage * this.resultsPerPage) - 9}} to {{this.currentPage * this.resultsPerPage}} of {{this.total_count}} results</h4>
+            <h4>Showing {{(this.currentPage * this.resultsPerPage) - 9}} to {{this.lastResultOfPage}} of {{this.total_count}} results</h4>
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
@@ -44,6 +44,7 @@ export default {
       searchTerm: "",
       currentPage: 1,
       resultsPerPage: 10,
+      lastResultOfPage: 0,
       totalPages: 1,
       results: [],
       total_count: 1,
@@ -72,9 +73,14 @@ export default {
           this.results = res.users;
           this.total_count = res.total_count;
 
+          //account for partially filled pages
           this.totalPages = parseInt(this.total_count / this.resultsPerPage);
           if (this.total_count % this.resultsPerPage !== 0) {
-            this.totalPages++; //account for partially filled pages
+            this.totalPages++; 
+          }
+          this.lastResultOfPage = this.currentPage * this.resultsPerPage
+          if (this.lastResultOfPage > this.total_count) {
+            this.lastResultOfPage = this.total_count;
           }
         }
       );
