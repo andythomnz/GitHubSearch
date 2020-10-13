@@ -7,16 +7,21 @@
     <br />
     <v-layout justify-center>
       <v-flex>
-        <v-row>
+        <v-row no-gutters>
+          <v-col>
           <v-select v-model="selectedSearchType" :items="searchTypes" label="Search Type" outlined></v-select>
+          </v-col>
+          <v-col :cols="8">
           <v-text-field
             outlined
             label="Search"
             v-model="searchTerm"
             @keydown.enter="onSearchBoxEnter"
             append-icon="mdi-magnify"
+            @click:append="onSearchBoxEnter"
             counter="100"
           ></v-text-field>
+          </v-col>
         </v-row>
       </v-flex>
     </v-layout>
