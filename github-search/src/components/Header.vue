@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <img alt="GitHub logo" src="../assets/github.png" />
-    <h1>GitHub Search</h1>
+    <router-link :to="{name: 'Home'}"><h1>GitHub Search</h1></router-link>
     <img alt="Search logo" src="../assets/search.png" />
   </div>
 </template>
@@ -15,8 +15,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 a {
-  color: #42b983;
+    text-decoration: none;
+    color: black !important;
 }
+
 .header {
   display: flex;
   flex-wrap: wrap;
