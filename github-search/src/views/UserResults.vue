@@ -1,8 +1,18 @@
 <template>
   <div class="user-search-results">
     <v-container style="width: 90%;">
-      <h1>Search Results</h1>
-      <h3>Showing {{(this.currentPage * this.resultsPerPage) - 9}} to {{this.currentPage * this.resultsPerPage}} of {{this.total_count}} results</h3>
+      <h2>Search Results</h2>
+      <v-container>
+        <v-row>
+          <v-col>
+            <h4>Showing {{(this.currentPage * this.resultsPerPage) - 9}} to {{this.currentPage * this.resultsPerPage}} of {{this.total_count}} results</h4>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col>
+            <v-select v-model="sortOrder" :items="sort_fields" label="Sort By"></v-select>
+          </v-col>
+        </v-row>
+      </v-container>
       <v-data-table
         :headers="headers"
         :items="results"
@@ -36,6 +46,12 @@ export default {
       totalPages: 1,
       results: [],
       total_count: 1,
+      sort_fields: [
+        { text: "Join Date", value: "joined" },
+        { text: "Followers", value: "followers" },
+        { text: "Repositories", value: "repositories" },
+      ],
+      sortOrder: "joined",
       headers: [
         { text: "Login", align: "start", sortable: false, value: "login" },
         { text: "Profile", value: "html_url", sortable: false },
@@ -49,7 +65,7 @@ export default {
   },
   methods: {
     refreshData: function () {
-      search("andrew", "joined", this.currentPage, this.resultsPerPage).then(
+      search("andrew", this.sortOrder, this.currentPage, this.resultsPerPage).then(
         (res) => {
           this.results = res.users;
           this.total_count = res.total_count;
@@ -66,6 +82,11 @@ export default {
       this.refreshData();
     },
   },
+  watch: {
+    sortOrder: function () {
+      this.refreshData();
+    }
+  }
 };
 </script>
 
