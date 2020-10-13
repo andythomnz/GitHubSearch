@@ -18,6 +18,8 @@ async function requestFromEndpoint() {
         {
           login: "andythomnz",
           html_url: "https://github.com/users/andythomnz",
+          type: "User",
+          avatar_url: "https://avatars2.githubusercontent.com/u/10441834?v=4",
           something: "somethingElse",
         },
       ],
@@ -30,10 +32,12 @@ function normalizeData(data) {
 }
 
 function normalizeUser(user) {
-  let { login, html_url } = user;
+  let { login, html_url, type, avatar_url } = user;
   return {
     login,
     html_url,
+    type,
+    avatar_url
   };
 }
 
