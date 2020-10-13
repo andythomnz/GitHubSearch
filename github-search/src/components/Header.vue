@@ -22,5 +22,6 @@ a {
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+  margin: 25px 0px 25px 0px;
 }
 </style>
