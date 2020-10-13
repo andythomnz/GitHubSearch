@@ -105,6 +105,7 @@ export default {
   },
   watch: {
     sortOrder: function () {
+      this.currentPage = 1; // If sort by changes, return user to first page of results
       this.refreshData();
     },
   },
