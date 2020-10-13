@@ -1,30 +1,16 @@
 <script>
-export async function search(searchTerm, sortBy, perPage, page) {
+import { getRequest } from "@/components/GitHubConnector/ApiConnector.vue";
+
+export async function search(searchTerm, sortBy, page) {
   //check args are not undefined
 
-  let useArgs = `Search Term: ${searchTerm}, Sort: ${sortBy}, PerPage: ${perPage}, Page: ${page}`;
+  let useArgs = `Search Term: ${searchTerm}, Sort: ${sortBy}, Page: ${page}`;
   console.log(useArgs);
-  let response = await requestFromEndpoint();
+  let response = await getRequest("/search/users",[`q=${searchTerm}+sort:${sortBy}`,`page=${page}`]);
+  console.log("Response is: ");
+  console.log(response);
   let users = normalizeData(response.data.items);
   return users;
-}
-
-async function requestFromEndpoint() {
-  return {
-    data: {
-      total_count: 1,
-      incomplete_results: false,
-      items: [
-        {
-          login: "andythomnz",
-          html_url: "https://github.com/users/andythomnz",
-          type: "User",
-          avatar_url: "https://avatars2.githubusercontent.com/u/10441834?v=4",
-          something: "somethingElse",
-        },
-      ],
-    },
-  };
 }
 
 function normalizeData(data) {

@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     refreshData: function () {
-      search().then(res => {
+      search("andrew","joined",this.currentPage).then(res => {
         this.results = res;
       })
     },
