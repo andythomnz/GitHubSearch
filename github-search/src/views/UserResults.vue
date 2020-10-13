@@ -38,9 +38,10 @@ import { search } from "@/components/GitHubConnector/SearchUsers.vue";
 
 export default {
   name: "UserResults",
-  props: ["searchTerm"],
+  props: [],
   data() {
     return {
+      searchTerm: "",
       currentPage: 1,
       resultsPerPage: 10,
       totalPages: 1,
@@ -61,11 +62,12 @@ export default {
   },
   components: {},
   mounted() {
+    this.searchTerm = this.$route.params.searchTerm;
     this.refreshData();
   },
   methods: {
     refreshData: function () {
-      search("andrew", this.sortOrder, this.currentPage, this.resultsPerPage).then(
+      search(this.searchTerm, this.sortOrder, this.currentPage, this.resultsPerPage).then(
         (res) => {
           this.results = res.users;
           this.total_count = res.total_count;
