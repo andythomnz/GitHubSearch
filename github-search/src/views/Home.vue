@@ -7,7 +7,7 @@
     <br />
     <v-layout justify-center>
       <v-flex>
-        <v-row no-gutters>
+        <v-row>
           <v-col>
           <v-select v-model="selectedSearchType" :items="searchTypes" label="Search Type" outlined></v-select>
           </v-col>
