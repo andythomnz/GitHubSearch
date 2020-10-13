@@ -5,7 +5,7 @@
       <v-container>
         <v-row>
           <v-col>
-            <h4>Showing {{(this.currentPage * this.resultsPerPage) - 9}} to {{this.lastResultOfPage}} of {{this.total_count}} results</h4>
+            <h4>Showing {{this.firstResultOfPage}} to {{this.lastResultOfPage}} of {{this.total_count}} results</h4>
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
@@ -44,10 +44,11 @@ export default {
       searchTerm: "",
       currentPage: 1,
       resultsPerPage: 10,
+      firstResultOfPage: 0,
       lastResultOfPage: 0,
       totalPages: 1,
       results: [],
-      total_count: 1,
+      total_count: 0,
       sort_fields: [
         { text: "Join Date", value: "joined" },
         { text: "Followers", value: "followers" },
@@ -73,10 +74,14 @@ export default {
           this.results = res.users;
           this.total_count = res.total_count;
 
-          //account for partially filled pages
+          //account for partially filled pages during pagination and 'showing X to Z of Y results'
           this.totalPages = parseInt(this.total_count / this.resultsPerPage);
           if (this.total_count % this.resultsPerPage !== 0) {
             this.totalPages++; 
+          }
+          this.firstResultOfPage = (this.currentPage * this.resultsPerPage) - 9;
+          if (this.firstResultOfPage > this.total_count) {
+            this.firstResultOfPage = this.total_count;
           }
           this.lastResultOfPage = this.currentPage * this.resultsPerPage
           if (this.lastResultOfPage > this.total_count) {
