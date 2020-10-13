@@ -1,16 +1,21 @@
 <script>
 import { getRequest } from "@/components/GitHubConnector/ApiConnector.vue";
 
-export async function search(searchTerm, sortBy, page) {
+const SEARCH_API_MAX_RESULTS = 1000;
+
+export async function search(searchTerm, sortBy, page, perPage) {
   //check args are not undefined
 
-  let useArgs = `Search Term: ${searchTerm}, Sort: ${sortBy}, Page: ${page}`;
-  console.log(useArgs);
-  let response = await getRequest("/search/users",[`q=${searchTerm}+sort:${sortBy}`,`page=${page}`]);
-  console.log("Response is: ");
-  console.log(response);
+  let response = await getRequest("/search/users",[`q=${searchTerm}+sort:${sortBy}`,`page=${page}`,`per_page=${perPage}`]);
   let users = normalizeData(response.data.items);
-  return users;
+  let {total_count} = response.data
+  if (total_count > SEARCH_API_MAX_RESULTS) {
+    total_count = SEARCH_API_MAX_RESULTS;
+  }
+  return {
+    users,
+    total_count
+  };
 }
 
 function normalizeData(data) {

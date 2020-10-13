@@ -1,24 +1,24 @@
 <template>
   <div class="user-search-results">
-    <h1>Users Search Results</h1>
-    <div id="results-data-table">
+    <v-container style="width: 90%;">
+      <h1>Search Results</h1>
+      <h3>Showing {{(this.currentPage * this.resultsPerPage) - 9}} to {{this.currentPage * this.resultsPerPage}} of {{this.total_count}} results</h3>
       <v-data-table
         :headers="headers"
         :items="results"
         disable-pagination
         :hide-default-footer="true"
-      >
-      </v-data-table>
-
-      <v-pagination
-        v-model="currentPage"
-        :length="totalPages"
-        @input="handlePageChange"
-        dark
-        color="grey"
-      >
-      </v-pagination>
-    </div>
+      ></v-data-table>
+      <v-container style="width: 60%;">
+        <v-pagination
+          v-model="currentPage"
+          :length="totalPages"
+          @input="handlePageChange"
+          dark
+          color="grey"
+        ></v-pagination>
+      </v-container>
+    </v-container>
   </div>
 </template>
 
@@ -32,8 +32,10 @@ export default {
   data() {
     return {
       currentPage: 1,
-      totalPages: 7,
+      resultsPerPage: 10,
+      totalPages: 1,
       results: [],
+      total_count: 1,
       headers: [
         { text: "Login", align: "start", sortable: false, value: "login" },
         { text: "Profile", value: "html_url", sortable: false },
@@ -47,9 +49,17 @@ export default {
   },
   methods: {
     refreshData: function () {
-      search("andrew","joined",this.currentPage).then(res => {
-        this.results = res;
-      })
+      search("andrew", "joined", this.currentPage, this.resultsPerPage).then(
+        (res) => {
+          this.results = res.users;
+          this.total_count = res.total_count;
+
+          this.totalPages = parseInt(this.total_count / this.resultsPerPage);
+          if (this.total_count % this.resultsPerPage !== 0) {
+            this.totalPages++; //account for partially filled pages
+          }
+        }
+      );
     },
     handlePageChange(destination) {
       this.currentPage = destination;
@@ -58,3 +68,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#results-data-table {
+  padding: 10px, 25px, 25px, 25px;
+}
+</style>
