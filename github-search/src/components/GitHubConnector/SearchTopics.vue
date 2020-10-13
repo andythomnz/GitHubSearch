@@ -1,5 +1,6 @@
 <script>
 import { getRequest } from "@/components/GitHubConnector/ApiConnector.vue";
+import moment from 'moment';
 
 const SEARCH_API_MAX_RESULTS = 1000;
 
@@ -44,6 +45,8 @@ function normalizeTopic(topic) {
   if (display_name == null) {
     display_name = name;
   }
+
+  created_at = moment(created_at).locale("en-nz").format('L LT').toString();
 
   return {
     display_name,
