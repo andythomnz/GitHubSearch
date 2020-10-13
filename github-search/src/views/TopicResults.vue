@@ -13,21 +13,23 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-data-table
-        :headers="headers"
-        :items="results"
-        disable-pagination
-        :hide-default-footer="true"
-      ></v-data-table>
-      <v-container style="width: 60%;">
-        <v-pagination
-          v-model="currentPage"
-          :length="totalPages"
-          @input="handlePageChange"
-          dark
-          color="grey"
-        ></v-pagination>
-      </v-container>
+      <v-card elevation="2" :loading="loading">
+        <v-data-table
+          :headers="headers"
+          :items="results"
+          disable-pagination
+          :hide-default-footer="true"
+        ></v-data-table>
+        <v-container style="width: 60%;">
+          <v-pagination
+            v-model="currentPage"
+            :length="totalPages"
+            @input="handlePageChange"
+            dark
+            color="grey"
+          ></v-pagination>
+        </v-container>
+      </v-card>
     </v-container>
   </div>
 </template>
@@ -42,6 +44,7 @@ export default {
   data() {
     return {
       searchTerm: "",
+      loading: true,
       featuredOnly: false,
       currentPage: 1,
       resultsPerPage: 10,
@@ -56,7 +59,12 @@ export default {
       ],
       sortOrder: "name",
       headers: [
-        { text: "Name", align: "start", sortable: false, value: "display_name" },
+        {
+          text: "Name",
+          align: "start",
+          sortable: false,
+          value: "display_name",
+        },
         { text: "Description", value: "short_description", sortable: false },
         { text: "Created At", value: "created_at", sortable: false },
         { text: "Featured", value: "featured", sortable: false },
@@ -71,26 +79,32 @@ export default {
   },
   methods: {
     refreshData: function () {
-      search(this.searchTerm, this.sortOrder, this.currentPage, this.resultsPerPage, this.featuredOnly).then(
-        (res) => {
-          this.results = res.topics;
-          this.total_count = res.total_count;
+      this.loading = true;
+      search(
+        this.searchTerm,
+        this.sortOrder,
+        this.currentPage,
+        this.resultsPerPage,
+        this.featuredOnly
+      ).then((res) => {
+        this.results = res.topics;
+        this.total_count = res.total_count;
 
-          //account for partially filled pages during pagination and 'showing X to Z of Y results'
-          this.totalPages = parseInt(this.total_count / this.resultsPerPage);
-          if (this.total_count % this.resultsPerPage !== 0) {
-            this.totalPages++; 
-          }
-          this.firstResultOfPage = (this.currentPage * this.resultsPerPage) - 9;
-          if (this.firstResultOfPage > this.total_count) {
-            this.firstResultOfPage = this.total_count;
-          }
-          this.lastResultOfPage = this.currentPage * this.resultsPerPage
-          if (this.lastResultOfPage > this.total_count) {
-            this.lastResultOfPage = this.total_count;
-          }
+        //account for partially filled pages during pagination and 'showing X to Z of Y results'
+        this.totalPages = parseInt(this.total_count / this.resultsPerPage);
+        if (this.total_count % this.resultsPerPage !== 0) {
+          this.totalPages++;
         }
-      );
+        this.firstResultOfPage = this.currentPage * this.resultsPerPage - 9;
+        if (this.firstResultOfPage > this.total_count) {
+          this.firstResultOfPage = this.total_count;
+        }
+        this.lastResultOfPage = this.currentPage * this.resultsPerPage;
+        if (this.lastResultOfPage > this.total_count) {
+          this.lastResultOfPage = this.total_count;
+        }
+        this.loading = false;
+      });
     },
     handlePageChange(destination) {
       this.currentPage = destination;
@@ -100,8 +114,8 @@ export default {
   watch: {
     sortOrder: function () {
       this.refreshData();
-    }
-  }
+    },
+  },
 };
 </script>
 
