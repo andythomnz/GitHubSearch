@@ -12,7 +12,7 @@ Or run the app yourself by following instructions [here](/github-search/README.m
 * Vuetify - primarily utilised for UI components. I chose this over BootstrapVue because I thought their documentation was clearer on the topic of handling server-side pagination & sorting (which I planned to use) and due to prior experience with Google's Material UI
 * Node.js + Express - to serve the deployed application on Heroku
 * Heroku - Deployed to their free hobby tier for demo purposes
-* Axios - for making HTTP requests. I chose Axios over fetch due to familiarity more succinct syntax 
+* Axios - for making HTTP requests. I chose Axios over fetch due to familiarity and its more succinct syntax 
 * Moment - for easily converting timestamps into nicer human-friendly formats
 
 ## What Next?

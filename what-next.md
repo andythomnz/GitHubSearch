@@ -17,9 +17,9 @@ This is a non-exhaustive brain-dump of some ideas for improvement I've had but n
    * Researching conventional architectures in Vue would also help, as I designed this having little previous experience in Vue. Again, the official Style Guide would likely help too.
 1. One point regarding the GitHub API. The `/topics` endpoint of their Search API is only in Developer Preview status:
    * Its design may change and this app could need to be updated to reflect that
-   * Most endpoints of the API implement server-side pagination & sorting. As a result, I designed this frontend application to utilise that. Unfortunately the `/topics` endpoint does not yet support server-side ordering. As individual pages of data are retrieved they are sorted by the client-side prior to display. I reached this compromise because I think thorough client-side sorting of this data is not feasible. Firstly, because only a limited number of free unauthenticated requests are allowed, it would not be possible to retrieve ALL the dataset to the front-end. Secondly, even if you had all of the data, sorting it on the front would be inefficient due to its large size and could easily overwhelm low-powered devices like smartphones.
-1. A CI / CD pipeline to automate the deploy process to Heroku would be nice
-1. Testing.... 
+   * Most endpoints of the API implement server-side pagination & sorting. As a result, I designed this frontend application to utilise that. Unfortunately the `/topics` endpoint does not yet support server-side sorting. As individual pages of data are retrieved they are sorted by the client-side prior to display. I reached this compromise because I think thorough client-side sorting of this data is not feasible. Firstly, because only a limited number of free unauthenticated requests are allowed, it would not be possible to retrieve ALL of the data to the front-end. Secondly, even if you retrieved all of the data, sorting it on the frontend would be inefficient due to its large size and could overwhelm low-powered devices like smartphones.
+2. A CI / CD pipeline to automate the deploy process to Heroku would be nice
+3. Testing.... 
 
 ![testing-meme](https://github.com/andythomnz/GitHubSearch/raw/main/screenshots/tests-meme.jpeg)
 
