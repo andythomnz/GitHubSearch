@@ -95,6 +95,10 @@ export default {
   },
   methods: {
     refreshData: function () {
+      // if there is no search query, redirect to the search box
+      if (!this.searchTerm) {
+        this.$router.push({name: "Home"});
+      }
       this.loading = true;
       search(
         this.searchTerm,

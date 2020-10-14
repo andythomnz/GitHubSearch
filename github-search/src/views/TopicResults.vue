@@ -81,6 +81,9 @@ export default {
   },
   methods: {
     refreshData: function () {
+      if (!this.searchTerm) {
+        this.$router.push({name: "Home"});
+      }
       this.loading = true;
       search(
         this.searchTerm,
