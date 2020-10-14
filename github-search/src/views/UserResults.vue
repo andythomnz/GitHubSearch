@@ -20,6 +20,13 @@
           disable-pagination
           :hide-default-footer="true"
         >
+          <template #item.avatar_url="{ item }">
+            <a target="_blank" :href="item.html_url" style="text-decoration: none;">
+            <v-avatar size="35">
+              <img :src="item.avatar_url" :alt="item.login" />
+            </v-avatar>
+            </a>
+          </template>
           <template #item.html_url="{ item }">
             <a target="_blank" :href="item.html_url" style="text-decoration: none;">
               <!-- {{item.html_url}} -->
@@ -66,7 +73,13 @@ export default {
       ],
       sortOrder: "joined",
       headers: [
-        { text: "Login", align: "start", sortable: false, value: "login" },
+        {
+          text: "Avatar",
+          align: "start",
+          sortable: false,
+          value: "avatar_url",
+        },
+        { text: "Login", sortable: false, value: "login" },
         { text: "User Type", value: "type", sortable: false },
         { text: "Profile", value: "html_url", sortable: false },
       ],
