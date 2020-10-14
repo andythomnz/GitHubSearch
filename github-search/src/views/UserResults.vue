@@ -7,6 +7,7 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
+            <br />
             <p
               class="font-weight-light"
             >Showing {{this.firstResultOfPage}} to {{this.lastResultOfPage}} of {{this.total_count}} results</p>
@@ -20,10 +21,14 @@
       <v-card elevation="2" :loading="loading">
         <v-alert v-if="this.error" prominent type="error">
           <v-row align="center">
+            <v-col class="grow">
+              <p class="font-weight-black">{{this.errorDetails.name}}</p>
+              {{this.errorDetails.description}}
+            </v-col>
             <v-col
-              class="grow"
-            ><p class="font-weight-black">{{this.errorDetails.name}}</p>{{this.errorDetails.description}} </v-col>
-            <v-col v-if="this.errorDetails.reference && this.errorDetails.reference.length > 0" class="shrink">
+              v-if="this.errorDetails.reference && this.errorDetails.reference.length > 0"
+              class="shrink"
+            >
               <v-btn :href="this.errorDetails.reference">More Information</v-btn>
             </v-col>
           </v-row>

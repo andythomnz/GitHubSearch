@@ -7,7 +7,10 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <p class="font-weight-light">Showing {{this.firstResultOfPage}} to {{this.lastResultOfPage}} of {{this.total_count}} results</p>
+            <br />
+            <p
+              class="font-weight-light"
+            >Showing {{this.firstResultOfPage}} to {{this.lastResultOfPage}} of {{this.total_count}} results</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
@@ -18,10 +21,14 @@
       <v-card elevation="2" :loading="loading">
         <v-alert v-if="this.error" prominent type="error">
           <v-row align="center">
+            <v-col class="grow">
+              <p class="font-weight-black">{{this.errorDetails.name}}</p>
+              {{this.errorDetails.description}}
+            </v-col>
             <v-col
-              class="grow"
-            ><p class="font-weight-black">{{this.errorDetails.name}}</p>{{this.errorDetails.description}} </v-col>
-            <v-col v-if="this.errorDetails.reference && this.errorDetails.reference.length > 0" class="shrink">
+              v-if="this.errorDetails.reference && this.errorDetails.reference.length > 0"
+              class="shrink"
+            >
               <v-btn :href="this.errorDetails.reference">More Information</v-btn>
             </v-col>
           </v-row>
@@ -95,7 +102,7 @@ export default {
     refreshData: function () {
       // if there is no search query, redirect to the search box
       if (!this.searchTerm) {
-        this.$router.push({name: "Home"});
+        this.$router.push({ name: "Home" });
       }
       this.loading = true;
       search(
@@ -104,28 +111,29 @@ export default {
         this.currentPage,
         this.resultsPerPage,
         this.featuredOnly
-      ).then((res) => {
-        this.results = res.topics;
-        this.total_count = res.total_count;
+      )
+        .then((res) => {
+          this.results = res.topics;
+          this.total_count = res.total_count;
 
-        //account for partially filled pages during pagination and 'showing X to Z of Y results'
-        this.totalPages = parseInt(this.total_count / this.resultsPerPage);
-        if (this.total_count % this.resultsPerPage !== 0) {
-          this.totalPages++;
-        }
-        this.firstResultOfPage = this.currentPage * this.resultsPerPage - 9;
-        if (this.firstResultOfPage > this.total_count) {
-          this.firstResultOfPage = this.total_count;
-        }
-        this.lastResultOfPage = this.currentPage * this.resultsPerPage;
-        if (this.lastResultOfPage > this.total_count) {
-          this.lastResultOfPage = this.total_count;
-        }
-        this.loading = false;
-      })
-      .catch((err) => {
-        this.handleDataError(err);
-      });
+          //account for partially filled pages during pagination and 'showing X to Z of Y results'
+          this.totalPages = parseInt(this.total_count / this.resultsPerPage);
+          if (this.total_count % this.resultsPerPage !== 0) {
+            this.totalPages++;
+          }
+          this.firstResultOfPage = this.currentPage * this.resultsPerPage - 9;
+          if (this.firstResultOfPage > this.total_count) {
+            this.firstResultOfPage = this.total_count;
+          }
+          this.lastResultOfPage = this.currentPage * this.resultsPerPage;
+          if (this.lastResultOfPage > this.total_count) {
+            this.lastResultOfPage = this.total_count;
+          }
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.handleDataError(err);
+        });
     },
     handlePageChange(destination) {
       this.currentPage = destination;
@@ -135,7 +143,7 @@ export default {
       this.errorDetails = err;
       this.loading = false;
       this.error = true;
-    }
+    },
   },
   watch: {
     sortOrder: function () {
