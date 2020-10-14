@@ -19,7 +19,14 @@
           :items="results"
           disable-pagination
           :hide-default-footer="true"
-        ></v-data-table>
+        >
+          <template #item.html_url="{ item }">
+            <a target="_blank" :href="item.html_url" style="text-decoration: none;">
+              <!-- {{item.html_url}} -->
+              <v-icon>mdi-open-in-new</v-icon>
+            </a>
+          </template>
+        </v-data-table>
         <v-container style="width: 60%;">
           <v-pagination
             v-model="currentPage"
@@ -60,8 +67,8 @@ export default {
       sortOrder: "joined",
       headers: [
         { text: "Login", align: "start", sortable: false, value: "login" },
-        { text: "Profile", value: "html_url", sortable: false },
         { text: "User Type", value: "type", sortable: false },
+        { text: "Profile", value: "html_url", sortable: false },
       ],
     };
   },
