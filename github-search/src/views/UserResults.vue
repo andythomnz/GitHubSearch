@@ -1,11 +1,14 @@
 <template>
   <div class="user-search-results">
     <v-container style="width: 90%;">
-      <h2>Search Results</h2>
-      <v-container>
-        <v-row>
+      <!-- <h2>Search Results</h2> -->
+      <v-container ma-0 pa-0>
+        <v-row no-gutters>
+          <p class="font-weight-black">Search Results</p>
+        </v-row>
+        <v-row no-gutters>
           <v-col>
-            <h4>Showing {{this.firstResultOfPage}} to {{this.lastResultOfPage}} of {{this.total_count}} results</h4>
+            <p class="font-weight-light">Showing {{this.firstResultOfPage}} to {{this.lastResultOfPage}} of {{this.total_count}} results</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
