@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <img alt="GitHub logo" src="../assets/github.png" />
-    <router-link :to="{name: 'Home'}"><h1>GitHub Search</h1></router-link>
+    <router-link :to="{name: 'Home'}">
+      <h1>GitHub Search</h1>
+    </router-link>
     <img alt="Search logo" src="../assets/search.png" />
   </div>
 </template>
@@ -12,11 +14,10 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 a {
-    text-decoration: none;
-    color: black !important;
+  text-decoration: none;
+  color: black !important;
 }
 
 .header {

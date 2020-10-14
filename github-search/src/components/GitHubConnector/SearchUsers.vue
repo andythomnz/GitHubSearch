@@ -4,17 +4,19 @@ import { getRequest } from "@/components/GitHubConnector/ApiConnector.vue";
 const SEARCH_API_MAX_RESULTS = 1000;
 
 export async function search(searchTerm, sortBy, page, perPage) {
-  //check args are not undefined
-
-  let response = await getRequest("/search/users",[`q=${searchTerm}+sort:${sortBy}`,`page=${page}`,`per_page=${perPage}`]);
+  let response = await getRequest("/search/users", [
+    `q=${searchTerm}+sort:${sortBy}`,
+    `page=${page}`,
+    `per_page=${perPage}`,
+  ]);
   let users = normalizeData(response.data.items);
-  let {total_count} = response.data
+  let { total_count } = response.data;
   if (total_count > SEARCH_API_MAX_RESULTS) {
     total_count = SEARCH_API_MAX_RESULTS;
   }
   return {
     users,
-    total_count
+    total_count,
   };
 }
 
@@ -28,16 +30,14 @@ function normalizeUser(user) {
     login,
     html_url,
     type,
-    avatar_url
+    avatar_url,
   };
 }
 
 export default {
   name: "SearchUsers",
   data() {
-    return {
-      
-    };
+    return {};
   },
 };
 </script>

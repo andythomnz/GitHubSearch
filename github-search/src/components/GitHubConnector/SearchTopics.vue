@@ -1,12 +1,10 @@
 <script>
 import { getRequest } from "@/components/GitHubConnector/ApiConnector.vue";
-import moment from 'moment';
+import moment from "moment";
 
 const SEARCH_API_MAX_RESULTS = 1000;
 
 export async function search(searchTerm, sortBy, page, perPage, featuredOnly) {
-  //check args are not undefined
-
   let query = searchTerm;
   if (featuredOnly) {
     query += "+is:featured";
@@ -15,7 +13,7 @@ export async function search(searchTerm, sortBy, page, perPage, featuredOnly) {
   let response = await getRequest(
     "/search/topics",
     [`q=${query}`, `page=${page}`, `per_page=${perPage}`],
-    [{key: "Accept", value: "application/vnd.github.mercy-preview+json"}]
+    [{ key: "Accept", value: "application/vnd.github.mercy-preview+json" }]
   );
   let topics = normalizeData(response.data.items, sortBy);
   let { total_count } = response.data;
@@ -46,7 +44,8 @@ function normalizeTopic(topic) {
     display_name = name;
   }
 
-  created_at = moment(created_at).locale("en-nz").format('L LT').toString();
+  //Re-format the date to be human-friendly format (NZ locale) dd/mm/yyyy hh:mm
+  created_at = moment(created_at).locale("en-nz").format("L LT").toString();
 
   return {
     display_name,
@@ -64,7 +63,6 @@ function sortResults(data, sortBy) {
   if (sortBy === "created_at") {
     return data.sort((a, b) => b.created_at.localeCompare(a.created_at));
   }
-  
 }
 
 export default {
