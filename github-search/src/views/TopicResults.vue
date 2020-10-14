@@ -16,6 +16,16 @@
         </v-row>
       </v-container>
       <v-card elevation="2" :loading="loading">
+        <v-alert v-if="this.error" prominent type="error">
+          <v-row align="center">
+            <v-col
+              class="grow"
+            ><p class="font-weight-black">{{this.errorDetails.name}}</p>{{this.errorDetails.description}} </v-col>
+            <v-col v-if="this.errorDetails.reference && this.errorDetails.reference.length > 0" class="shrink">
+              <v-btn :href="this.errorDetails.reference">More Information</v-btn>
+            </v-col>
+          </v-row>
+        </v-alert>
         <v-data-table
           :headers="headers"
           :items="results"
@@ -47,6 +57,8 @@ export default {
     return {
       searchTerm: "",
       loading: true,
+      error: false,
+      errorDetails: {},
       featuredOnly: false,
       currentPage: 1,
       resultsPerPage: 10,
@@ -110,12 +122,20 @@ export default {
           this.lastResultOfPage = this.total_count;
         }
         this.loading = false;
+      })
+      .catch((err) => {
+        this.handleDataError(err);
       });
     },
     handlePageChange(destination) {
       this.currentPage = destination;
       this.refreshData();
     },
+    handleDataError(err) {
+      this.errorDetails = err;
+      this.loading = false;
+      this.error = true;
+    }
   },
   watch: {
     sortOrder: function () {

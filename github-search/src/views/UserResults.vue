@@ -1,14 +1,15 @@
 <template>
   <div class="user-search-results">
     <v-container style="width: 90%;">
-      <!-- <h2>Search Results</h2> -->
       <v-container ma-0 pa-0>
         <v-row no-gutters>
           <p class="font-weight-black">Search Results</p>
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <p class="font-weight-light">Showing {{this.firstResultOfPage}} to {{this.lastResultOfPage}} of {{this.total_count}} results</p>
+            <p
+              class="font-weight-light"
+            >Showing {{this.firstResultOfPage}} to {{this.lastResultOfPage}} of {{this.total_count}} results</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
@@ -17,6 +18,16 @@
         </v-row>
       </v-container>
       <v-card elevation="2" :loading="loading">
+        <v-alert v-if="this.error" prominent type="error">
+          <v-row align="center">
+            <v-col
+              class="grow"
+            ><p class="font-weight-black">{{this.errorDetails.name}}</p>{{this.errorDetails.description}} </v-col>
+            <v-col v-if="this.errorDetails.reference && this.errorDetails.reference.length > 0" class="shrink">
+              <v-btn :href="this.errorDetails.reference">More Information</v-btn>
+            </v-col>
+          </v-row>
+        </v-alert>
         <v-data-table
           :headers="headers"
           :items="results"
@@ -25,14 +36,13 @@
         >
           <template #item.avatar_url="{ item }">
             <a target="_blank" :href="item.html_url" style="text-decoration: none;">
-            <v-avatar size="35">
-              <img :src="item.avatar_url" :alt="item.login" />
-            </v-avatar>
+              <v-avatar size="35">
+                <img :src="item.avatar_url" :alt="item.login" />
+              </v-avatar>
             </a>
           </template>
           <template #item.html_url="{ item }">
             <a target="_blank" :href="item.html_url" style="text-decoration: none;">
-              <!-- {{item.html_url}} -->
               <v-icon>mdi-open-in-new</v-icon>
             </a>
           </template>
@@ -62,6 +72,8 @@ export default {
     return {
       searchTerm: "",
       loading: true,
+      error: false,
+      errorDetails: {},
       currentPage: 1,
       resultsPerPage: 10,
       firstResultOfPage: 0,
@@ -97,7 +109,7 @@ export default {
     refreshData: function () {
       // if there is no search query, redirect to the search box
       if (!this.searchTerm) {
-        this.$router.push({name: "Home"});
+        this.$router.push({ name: "Home" });
       }
       this.loading = true;
       search(
@@ -105,29 +117,38 @@ export default {
         this.sortOrder,
         this.currentPage,
         this.resultsPerPage
-      ).then((res) => {
-        this.results = res.users;
-        this.total_count = res.total_count;
+      )
+        .then((res) => {
+          this.results = res.users;
+          this.total_count = res.total_count;
 
-        //account for partially filled pages during pagination and 'showing X to Z of Y results'
-        this.totalPages = parseInt(this.total_count / this.resultsPerPage);
-        if (this.total_count % this.resultsPerPage !== 0) {
-          this.totalPages++;
-        }
-        this.firstResultOfPage = this.currentPage * this.resultsPerPage - 9;
-        if (this.firstResultOfPage > this.total_count) {
-          this.firstResultOfPage = this.total_count;
-        }
-        this.lastResultOfPage = this.currentPage * this.resultsPerPage;
-        if (this.lastResultOfPage > this.total_count) {
-          this.lastResultOfPage = this.total_count;
-        }
-        this.loading = false;
-      });
+          //account for partially filled pages during pagination and 'showing X to Z of Y results'
+          this.totalPages = parseInt(this.total_count / this.resultsPerPage);
+          if (this.total_count % this.resultsPerPage !== 0) {
+            this.totalPages++;
+          }
+          this.firstResultOfPage = this.currentPage * this.resultsPerPage - 9;
+          if (this.firstResultOfPage > this.total_count) {
+            this.firstResultOfPage = this.total_count;
+          }
+          this.lastResultOfPage = this.currentPage * this.resultsPerPage;
+          if (this.lastResultOfPage > this.total_count) {
+            this.lastResultOfPage = this.total_count;
+          }
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.handleDataError(err);
+        });
     },
     handlePageChange(destination) {
       this.currentPage = destination;
       this.refreshData();
+    },
+    handleDataError(err) {
+      this.errorDetails = err;
+      this.loading = false;
+      this.error = true;
     },
   },
   watch: {
